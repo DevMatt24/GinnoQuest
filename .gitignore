@@ -1,0 +1,12 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Archivos temporales
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Configuración local del editor
+.vscode/
