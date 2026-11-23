@@ -912,5 +912,5 @@ position = Vector2(-191, 535)
 position = Vector2(2690, 540)
 
 [node name="Parallax" parent="." unique_id=1065202218 instance=ExtResource("5_eh52p")]
-position = Vector2(-2401, -132)
+position = Vector2(-541, -189)
 scale = Vector2(4, 4)
