@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 const SPEED := 300.0
-const JUMP_VELOCITY := -470.0
+const JUMP_VELOCITY := -430.0
 
 var bounds := Rect2()  # área permitida; vacía = sin límites
 @onready var walk_sound: AudioStreamPlayer2D = $WalkSound
