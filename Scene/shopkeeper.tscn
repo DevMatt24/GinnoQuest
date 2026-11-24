@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://h2knwu3uavgg"]
+
+[ext_resource type="Texture2D" uid="uid://d3mfsug7rwti1" path="res://Sprite/npc/Idle.png" id="1_6fork"]
+[ext_resource type="Script" uid="uid://byo65iicpan0a" path="res://Script/shopkeeper.gd" id="1_k4pga"]
+[ext_resource type="PackedScene" uid="uid://bq6upy3hxob4f" path="res://Scene/shop_ui.tscn" id="3_snu72"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k4pga"]
+atlas = ExtResource("1_6fork")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_snu72"]
+atlas = ExtResource("1_6fork")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ihmja"]
+atlas = ExtResource("1_6fork")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rfpkm"]
+atlas = ExtResource("1_6fork")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7b1gs"]
+atlas = ExtResource("1_6fork")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o5pyv"]
+atlas = ExtResource("1_6fork")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xl3cd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k4pga")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_snu72")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ihmja")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rfpkm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7b1gs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o5pyv")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xl3cd"]
+size = Vector2(101.75, 76.75)
+
+[node name="shopkeeper" type="Area2D" unique_id=865217871]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_k4pga")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=750543213]
+sprite_frames = SubResource("SpriteFrames_xl3cd")
+autoplay = "default"
+frame_progress = 0.7340232
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1487704545]
+position = Vector2(-1, -3)
+shape = SubResource("RectangleShape2D_xl3cd")
+
+[node name="ShopUI" parent="." unique_id=661757740 instance=ExtResource("3_snu72")]

@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bq6upy3hxob4f"]
+
+[ext_resource type="Script" uid="uid://c8ygvuepn6o4p" path="res://Script/shop_ui.gd" id="1_1a0ly"]
+
+[node name="ShopUI" type="CanvasLayer" unique_id=661757740]
+script = ExtResource("1_1a0ly")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=228031467]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Margin" type="MarginContainer" parent="Panel" unique_id=2040821120]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin" unique_id=117982307]
+layout_mode = 2
+
+[node name="Dialogue" type="Label" parent="Panel/Margin/VBox" unique_id=1838521487]
+layout_mode = 2
+
+[node name="Items" type="VBoxContainer" parent="Panel/Margin/VBox" unique_id=1323572179]
+layout_mode = 2
+
+[node name="CoinsLabel" type="Label" parent="Panel/Margin/VBox" unique_id=1907539130]
+layout_mode = 2

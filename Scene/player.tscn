@@ -3,31 +3,53 @@
 [ext_resource type="Script" uid="uid://n56nress1hwq" path="res://Script/player.gd" id="1_xa75v"]
 [ext_resource type="Texture2D" uid="uid://b8l22dgdavo2m" path="res://Sprite/character/Warrior_Red.png" id="1_y8w33"]
 [ext_resource type="Texture2D" uid="uid://bisfebyee0hvu" path="res://Sprite/character/Jump.png" id="2_xa75v"]
+[ext_resource type="Texture2D" uid="uid://d2fyrqf5tkt1y" path="res://Sprite/character/Death.png" id="3_ivevv"]
 [ext_resource type="AudioStream" uid="uid://du8l7gafi2h6t" path="res://Audio/footstep_player.mp3" id="4_58ae2"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_58ae2"]
-atlas = ExtResource("1_y8w33")
-region = Rect2(0, 384, 192, 192)
+[ext_resource type="Script" uid="uid://cq1truvons27g" path="res://Script/camera_2d.gd" id="5_r6jsd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ivevv"]
 atlas = ExtResource("1_y8w33")
-region = Rect2(192, 384, 192, 192)
+region = Rect2(192, 576, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r6jsd"]
 atlas = ExtResource("1_y8w33")
-region = Rect2(384, 384, 192, 192)
+region = Rect2(384, 576, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p6qlh"]
 atlas = ExtResource("1_y8w33")
-region = Rect2(576, 384, 192, 192)
+region = Rect2(576, 576, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2sw5t"]
 atlas = ExtResource("1_y8w33")
-region = Rect2(768, 384, 192, 192)
+region = Rect2(768, 576, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ij4jb"]
 atlas = ExtResource("1_y8w33")
-region = Rect2(960, 384, 192, 192)
+region = Rect2(960, 576, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2p1i5"]
+atlas = ExtResource("3_ivevv")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yosb2"]
+atlas = ExtResource("3_ivevv")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1axnv"]
+atlas = ExtResource("3_ivevv")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bk8bd"]
+atlas = ExtResource("3_ivevv")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cvqm3"]
+atlas = ExtResource("3_ivevv")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_71nu8"]
+atlas = ExtResource("3_ivevv")
+region = Rect2(960, 0, 192, 192)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c68nv"]
 atlas = ExtResource("2_xa75v")
@@ -129,9 +151,6 @@ region = Rect2(960, 192, 192, 192)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_58ae2")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_ivevv")
 }, {
 "duration": 1.0,
@@ -150,10 +169,28 @@ animations = [{
 "name": &"attack",
 "speed": 9.0
 }, {
-"frames": [],
-"loop": 1,
-"name": &"dead",
-"speed": 5.0
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2p1i5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yosb2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1axnv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bk8bd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cvqm3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_71nu8")
+}],
+"loop": 0,
+"name": &"death",
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -252,7 +289,10 @@ animations = [{
 radius = 17.0
 height = 58.0
 
-[node name="Player" type="CharacterBody2D" unique_id=514193922]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xl3cd"]
+size = Vector2(26, 23)
+
+[node name="Player" type="CharacterBody2D" unique_id=514193922 groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_xa75v")
 
@@ -330,13 +370,23 @@ color = Color(0.54509807, 0.41960785, 0.2901961, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=591239274]
 sprite_frames = SubResource("SpriteFrames_xl3cd")
-animation = &"walk"
+animation = &"attack"
+frame = 4
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1589010089]
 shape = SubResource("CapsuleShape2D_biwno")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=22610848]
-zoom = Vector2(0.9, 0.9)
+offset = Vector2(0, -40)
+zoom = Vector2(1.5, 1.5)
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+drag_vertical_enabled = true
+drag_left_margin = 0.25
+drag_top_margin = 0.25
+drag_bottom_margin = 0.25
+script = ExtResource("5_r6jsd")
 
 [node name="WalkSound" type="AudioStreamPlayer2D" parent="." unique_id=1106617999]
 stream = ExtResource("4_58ae2")
@@ -344,3 +394,11 @@ stream = ExtResource("4_58ae2")
 [node name="AttackArea" type="Area2D" parent="." unique_id=1090304736]
 collision_layer = 0
 collision_mask = 4
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=177105092]
+position = Vector2(42, 15)
+shape = SubResource("RectangleShape2D_xl3cd")
+debug_color = Color(0.9313643, 0.18691942, 0.46999037, 0.41960785)
+
+[connection signal="health_changed" from="." to="." method="_on_health_changed"]

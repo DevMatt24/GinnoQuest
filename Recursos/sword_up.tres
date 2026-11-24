@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ShopItem" format=3 uid="uid://d03p3s1a7uphj"]
+
+[ext_resource type="Script" uid="uid://jtlaojyjem8l" path="res://Script/shop_item.gd" id="1_lgox3"]
+[ext_resource type="Texture2D" uid="uid://cs8g61fjr0lv8" path="res://Recursos/items/Arrow.png" id="1_y36ab"]
+
+[resource]
+script = ExtResource("1_lgox3")
+icon = ExtResource("1_y36ab")
+metadata/_custom_type_script = "uid://jtlaojyjem8l"

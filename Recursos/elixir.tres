@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ShopItem" format=3 uid="uid://bxmr4xs564oyo"]
+
+[ext_resource type="Texture2D" uid="uid://klfkhpf74jxd" path="res://Recursos/items/potion_C_blue_full.png" id="1_me4fv"]
+[ext_resource type="Script" uid="uid://jtlaojyjem8l" path="res://Script/shop_item.gd" id="1_vva6v"]
+
+[resource]
+script = ExtResource("1_vva6v")
+icon = ExtResource("1_me4fv")
+metadata/_custom_type_script = "uid://jtlaojyjem8l"
