@@ -30,9 +30,8 @@ func open(p: Node, shop_items: Array[ShopItem], greeting: String) -> void:
 	_build_buttons()
 	_refresh()
 	_play_entrance()
-	buttons[0].grab_focus()
-	buttons[0].grab_focus()
-
+	if buttons.size() > 0:
+		buttons[0].grab_focus()
 func close() -> void:
 	if player and player.coins_changed.is_connected(_refresh):
 		player.coins_changed.disconnect(_refresh)
@@ -72,6 +71,7 @@ func _build_buttons() -> void:
 		_style_button(b)
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.icon = items[i].icon
+		b.add_theme_constant_override("h_separation", 14)
 		b.pressed.connect(_on_item_pressed.bind(i))
 		b.focus_entered.connect(_on_item_focused.bind(i))
 		b.mouse_entered.connect(b.grab_focus)
@@ -107,23 +107,45 @@ func _play_entrance() -> void:
 	_refresh()
 
 # Estado de cada producto: texto, color y bloqueo
+
 func _refresh(_total: int = 0) -> void:
+
 	coins_label.text = "Monedas: %d" % player.coins
+
 	for i in items.size():
+
 		var item := items[i]
 		var reason := _block_reason(item)
 		var b := buttons[i]
+
 		var price_text := "%d monedas" % _price(item)
 
 		if reason == "":
-			b.text = " %s   —   %s" % [item.item_name, price_text]
-			b.add_theme_color_override("font_color", TEXT_COLOR)
-			b.modulate.a = 1.0
-		else:
-			b.text = " [X] %s   —   %s   (%s)" % [item.item_name, price_text, reason.trim_suffix(".")]
-			b.add_theme_color_override("font_color", Color(0.6, 0.65, 0.65))
-			b.modulate.a = 0.75
+			b.text = "%s     •     %s" % [
+				item.item_name,
+				price_text
+			]
 
+			b.add_theme_color_override(
+				"font_color",
+				Color("#FFF0D0")
+			)
+
+			b.modulate = Color.WHITE
+
+		else:
+			b.text = "%s     •     %s\n%s" % [
+				item.item_name,
+				price_text,
+				reason
+			]
+
+			b.add_theme_color_override(
+				"font_color",
+				Color("#D4BDA0")
+			)
+
+			b.modulate.a = 0.85
 func _grow(b: Control) -> void:
 	b.pivot_offset = b.size / 2.0
 	create_tween().tween_property(b, "scale", Vector2(1.03, 1.03), 0.1)
@@ -171,51 +193,137 @@ const TEXT_COLOR := Color(0.96, 0.93, 0.82)
 const GOLD := Color(0.98, 0.86, 0.5)
 const GRASS := Color(0.65, 0.9, 0.4)
 
-func _style_ui() -> void:
-	# Panel anclado abajo, de lado a lado
-	var panel: Control = $Panel
-	panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	panel.offset_left = 16
-	panel.offset_right = -16
-	panel.offset_top = -250
-	panel.offset_bottom = -16
 
+func _style_ui() -> void:
+	var panel: Control = $Panel
+
+	# Posición y tamaño.
+	panel.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	panel.offset_left = -420
+	panel.offset_right = 420
+	panel.offset_top = -300
+	panel.offset_bottom = -20
+
+	# Panel medieval de madera oscura.
 	var panel_style := StyleBoxFlat.new()
-	panel_style.bg_color = Color(0.07, 0.17, 0.23, 0.96)
-	panel_style.border_color = GOLD
-	panel_style.set_border_width_all(3)
+
+	panel_style.bg_color = Color("#49301F")
+	panel_style.border_color = Color("#D9AC58")
+	panel_style.set_border_width_all(4)
+
 	panel_style.set_corner_radius_all(8)
+
+	panel_style.content_margin_left = 18
+	panel_style.content_margin_right = 18
+	panel_style.content_margin_top = 14
+	panel_style.content_margin_bottom = 14
+
+	panel_style.shadow_color = Color(0, 0, 0, 0.45)
+	panel_style.shadow_size = 8
+	panel_style.shadow_offset = Vector2(3, 4)
+
 	panel.add_theme_stylebox_override("panel", panel_style)
 
+	# Espacio entre los productos.
+	items_box.add_theme_constant_override("separation", 8)
+
+	# Diálogo del mercader.
 	dialogue.add_theme_font_size_override("font_size", 20)
-	dialogue.add_theme_color_override("font_color", TEXT_COLOR)
-	coins_label.add_theme_font_size_override("font_size", 18)
-	coins_label.add_theme_color_override("font_color", GOLD)
+	dialogue.add_theme_color_override(
+		"font_color", Color("#FFE5AE")
+	)
+	dialogue.add_theme_color_override(
+		"font_outline_color", Color("#24170F")
+	)
+	dialogue.add_theme_constant_override("outline_size", 4)
+
+	# Monedas.
+	coins_label.add_theme_font_size_override("font_size", 19)
+	coins_label.add_theme_color_override(
+		"font_color", Color("#FFD36E")
+	)
+	coins_label.add_theme_color_override(
+		"font_outline_color", Color("#24170F")
+	)
+	coins_label.add_theme_constant_override("outline_size", 3)
+
 	coins_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 func _style_button(b: Button) -> void:
-	var normal_bg := Color(0.12, 0.28, 0.35)
-	var hover_bg := Color(0.2, 0.42, 0.45)
-	b.add_theme_stylebox_override("normal", _make_style(normal_bg, Color(0.3, 0.55, 0.55)))
-	b.add_theme_stylebox_override("hover", _make_style(hover_bg, GRASS))
-	b.add_theme_stylebox_override("focus", _make_style(hover_bg, GRASS))
-	b.add_theme_stylebox_override("pressed", _make_style(Color(0.3, 0.5, 0.3), GOLD))
-	b.add_theme_color_override("font_color", TEXT_COLOR)
-	b.add_theme_color_override("font_hover_color", GOLD)
-	b.add_theme_color_override("font_focus_color", GOLD)
-	b.add_theme_font_size_override("font_size", 18)
+
+	# Tamaño compacto.
+	b.custom_minimum_size = Vector2(0, 48)
+	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	b.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	b.expand_icon = false
+
+	# Colores medievales.
+	var wood_normal := Color("#68452C")
+	var wood_hover := Color("#92633B")
+	var wood_pressed := Color("#49301F")
+
+	b.add_theme_stylebox_override(
+		"normal",
+		_make_style(wood_normal, Color("#B98A4B"))
+	)
+
+	b.add_theme_stylebox_override(
+		"hover",
+		_make_style(wood_hover, Color("#FFE09A"))
+	)
+
+	b.add_theme_stylebox_override(
+		"focus",
+		_make_style(wood_hover, Color("#FFE09A"))
+	)
+
+	b.add_theme_stylebox_override(
+		"pressed",
+		_make_style(wood_pressed, Color("#E8B95E"))
+	)
+
+	# Tipografía.
+	b.add_theme_color_override(
+		"font_color", Color("#FFF0D0")
+	)
+
+	b.add_theme_color_override(
+		"font_hover_color", Color("#FFE39B")
+	)
+
+	b.add_theme_color_override(
+		"font_focus_color", Color("#FFE39B")
+	)
+
+	b.add_theme_color_override(
+		"font_pressed_color", Color("#FFFFFF")
+	)
+
+	b.add_theme_color_override(
+		"font_outline_color", Color("#24170F")
+	)
+
+	b.add_theme_constant_override("outline_size", 3)
+	b.add_theme_font_size_override("font_size", 17)
+
 func _make_style(bg: Color, border: Color) -> StyleBoxFlat:
+
 	var s := StyleBoxFlat.new()
+
 	s.bg_color = bg
 	s.border_color = border
+
 	s.set_border_width_all(2)
 	s.set_corner_radius_all(5)
-	s.content_margin_left = 12
-	s.content_margin_right = 12
-	s.content_margin_top = 6
-	s.content_margin_bottom = 6
-	return s
 
+	s.content_margin_left = 14
+	s.content_margin_right = 14
+	s.content_margin_top = 7
+	s.content_margin_bottom = 7
+
+	return s
 
 # Texto que se escribe letra por letra
 func _say(text: String, color := TEXT_COLOR) -> void:

@@ -1302,6 +1302,7 @@ scale = Vector2(2, 2)
 
 [node name="Coin2" parent="coin" unique_id=197775045 instance=ExtResource("21_0s263")]
 position = Vector2(471, 179.5)
+monitoring = false
 
 [node name="Enemigos" type="Node2D" parent="." unique_id=582788167]
 z_index = 1
