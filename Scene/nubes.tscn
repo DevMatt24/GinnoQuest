@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://cyiw83ytstoar"]
+
+[ext_resource type="Texture2D" uid="uid://clhjywgavvyt7" path="res://Sprite/mapa/Background/nubes/Clouds_03.png" id="1_u78ew"]
+[ext_resource type="Texture2D" uid="uid://c40bcjh5a5v7n" path="res://Sprite/mapa/Background/nubes/Clouds_01.png" id="2_pf4a3"]
+[ext_resource type="Texture2D" uid="uid://byad7l4tmmy8" path="res://Sprite/mapa/Background/nubes/Clouds_08.png" id="3_audpb"]
+[ext_resource type="Texture2D" uid="uid://b53j5y1ssnawn" path="res://Sprite/mapa/Background/nubes/Clouds_06.png" id="4_7jmhy"]
+
+[node name="Parallax" type="Node2D" unique_id=1065202218]
+
+[node name="1" type="Parallax2D" parent="." unique_id=1547825768]
+scroll_scale = Vector2(0, 0)
+scroll_offset = Vector2(3, 0)
+repeat_size = Vector2(576, 0)
+autoscroll = Vector2(-6, 0)
+repeat_times = 4
+ignore_camera_scroll = true
+
+[node name="5" type="Sprite2D" parent="1" unique_id=282838524]
+position = Vector2(244, -18)
+texture = ExtResource("2_pf4a3")
+centered = false
+
+[node name="2" type="Parallax2D" parent="." unique_id=703222903]
+scroll_scale = Vector2(0, 0)
+repeat_size = Vector2(576, 0)
+autoscroll = Vector2(-5, 0)
+repeat_times = 4
+ignore_camera_scroll = true
+
+[node name="4" type="Sprite2D" parent="2" unique_id=1185668552]
+position = Vector2(-8, -75)
+texture = ExtResource("4_7jmhy")
+centered = false
+
+[node name="3" type="Parallax2D" parent="." unique_id=1690038234]
+scroll_scale = Vector2(0, 0)
+scroll_offset = Vector2(43, -113)
+repeat_size = Vector2(576, 0)
+autoscroll = Vector2(-4, 0)
+repeat_times = 4
+ignore_camera_scroll = true
+
+[node name="3" type="Sprite2D" parent="3" unique_id=2142796714]
+position = Vector2(280, 54)
+texture = ExtResource("3_audpb")
+centered = false
+
+[node name="4" type="Parallax2D" parent="." unique_id=827235092]
+scroll_scale = Vector2(0, 0)
+scroll_offset = Vector2(-23, -19)
+repeat_size = Vector2(576, 0)
+autoscroll = Vector2(-3, 0)
+repeat_times = 4
+ignore_camera_scroll = true
+
+[node name="5" type="Sprite2D" parent="4" unique_id=79806715]
+position = Vector2(-487, -6)
+texture = ExtResource("1_u78ew")
+centered = false

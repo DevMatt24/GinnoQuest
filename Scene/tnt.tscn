@@ -1,0 +1,174 @@
+[gd_scene format=3 uid="uid://i4cej72bdnug"]
+
+[ext_resource type="Texture2D" uid="uid://cpdkp8s1v4h8" path="res://Sprite/enemigos/Goblins/Troops/TNT/Dynamite/Dynamite.png" id="1_62cgs"]
+[ext_resource type="Script" uid="uid://vrrf20yuvwy" path="res://Script/tnt.gd" id="1_dlu8r"]
+[ext_resource type="Texture2D" uid="uid://cjfhudnrxxvi8" path="res://Sprite/Efectos/Explosion/Explosions.png" id="2_dlu8r"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_62cgs"]
+friction = 0.8
+bounce = 0.2
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0305l"]
+atlas = ExtResource("1_62cgs")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_evn2j"]
+atlas = ExtResource("1_62cgs")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0l6w"]
+atlas = ExtResource("1_62cgs")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aprc7"]
+atlas = ExtResource("1_62cgs")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q23nx"]
+atlas = ExtResource("1_62cgs")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c147g"]
+atlas = ExtResource("1_62cgs")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xl3cd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0305l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_evn2j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0l6w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aprc7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q23nx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c147g")
+}],
+"loop": 1,
+"name": &"fuse",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xl3cd"]
+radius = 20.880613
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1e51u"]
+atlas = ExtResource("2_dlu8r")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2eogj"]
+atlas = ExtResource("2_dlu8r")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_86878"]
+atlas = ExtResource("2_dlu8r")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cxomh"]
+atlas = ExtResource("2_dlu8r")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rpfi2"]
+atlas = ExtResource("2_dlu8r")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o3rj3"]
+atlas = ExtResource("2_dlu8r")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fw3tm"]
+atlas = ExtResource("2_dlu8r")
+region = Rect2(1152, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0urv"]
+atlas = ExtResource("2_dlu8r")
+region = Rect2(1344, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4a1dl"]
+atlas = ExtResource("2_dlu8r")
+region = Rect2(1536, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cjqpa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1e51u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2eogj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_86878")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cxomh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rpfi2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o3rj3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fw3tm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0urv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4a1dl")
+}],
+"loop": 0,
+"name": &"explode",
+"speed": 9.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cjqpa"]
+radius = 59.008472
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hqox4"]
+radius = 26.476404
+
+[node name="Tnt" type="RigidBody2D" unique_id=1564380691]
+collision_layer = 4
+physics_material_override = SubResource("PhysicsMaterial_62cgs")
+script = ExtResource("1_dlu8r")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1191873710]
+sprite_frames = SubResource("SpriteFrames_xl3cd")
+animation = &"fuse"
+frame_progress = 0.08453329
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1527909173]
+shape = SubResource("CircleShape2D_xl3cd")
+
+[node name="Explosion" type="AnimatedSprite2D" parent="." unique_id=1152161040]
+sprite_frames = SubResource("SpriteFrames_cjqpa")
+animation = &"explode"
+frame = 8
+frame_progress = 1.0
+
+[node name="BlastArea" type="Area2D" parent="." unique_id=14144924]
+collision_layer = 0
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BlastArea" unique_id=2062553349]
+shape = SubResource("CircleShape2D_cjqpa")
+debug_color = Color(0.92922074, 0.17438424, 0.50905436, 0.41960785)
+
+[node name="HitArea" type="Area2D" parent="." unique_id=997661940]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea" unique_id=906837240]
+shape = SubResource("CircleShape2D_hqox4")
+debug_color = Color(0.5937913, 0.3917456, 0.9640315, 0.41960785)

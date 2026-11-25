@@ -1,12 +1,16 @@
+class_name Enemy
 extends CharacterBody2D
 
 const SPEED := 60.0
 
+@export var frames: SpriteFrames
+@export var faces_right := true
 @export var max_health := 3
 @export var attack_damage := 1
 @export var attack_cooldown := 1.0
 @export var coin_scene: PackedScene = preload("res://Scene/coin.tscn")   # ajustá la ruta
 @export var coin_value := 2
+@export var attack_hit_point := 0.5 
 var health := 0
 var direction := 1
 var is_dead := false
@@ -23,6 +27,8 @@ var player: Node2D
 @onready var damage_area: Area2D = $DamageArea
 
 func _ready() -> void:
+	if frames:
+		sprite.sprite_frames = frames
 	health = max_health
 	player = get_tree().get_first_node_in_group("player")
 	sprite.flip_h = direction < 0

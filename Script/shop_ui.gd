@@ -3,13 +3,14 @@ extends CanvasLayer
 signal closed
 
 @onready var dialogue: Label = $Panel/Margin/VBox/Dialogue
-@onready var items_box: VBoxContainer = $Panel/Margin/VBox/Items
+@onready var items_box: HBoxContainer = $Panel/Margin/VBox/Items
 @onready var coins_label: Label = $Panel/Margin/VBox/CoinsLabel
 
 var player: Node
 var items: Array[ShopItem] = []
 var buttons: Array[Button] = []
-
+var price_labels: Array[Label] = []
+var status_labels: Array[Label] = []
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS   # funciona con el juego pausado
 	_style_ui()
@@ -18,7 +19,12 @@ func _ready() -> void:
 func open(p: Node, shop_items: Array[ShopItem], greeting: String) -> void:
 	player = p
 	items = shop_items
-	get_tree().paused = true
+	# Congelar solamente al jugador
+	player.velocity = Vector2.ZERO
+	player.set_physics_process(false)
+
+	if player.has_node("WalkSound"):
+		player.get_node("WalkSound").stop()
 	show()
 	$Panel.modulate.a = 0.0
 	create_tween().tween_property($Panel, "modulate:a", 1.0, 0.2)
@@ -32,10 +38,15 @@ func open(p: Node, shop_items: Array[ShopItem], greeting: String) -> void:
 	_play_entrance()
 	if buttons.size() > 0:
 		buttons[0].grab_focus()
+	await get_tree().process_frame
+	_position_close_button()
 func close() -> void:
 	if player and player.coins_changed.is_connected(_refresh):
 		player.coins_changed.disconnect(_refresh)
-	get_tree().paused = false
+
+	if is_instance_valid(player):
+		player.set_physics_process(true)
+
 	hide()
 	closed.emit()
 
@@ -46,51 +57,99 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _price(item: ShopItem) -> int:
-	var level: int = player.weapon_level if item.type == ShopItem.Type.WEAPON_UPGRADE else 0
+	var level := 0
+
+	match item.type:
+		ShopItem.Type.WEAPON_UPGRADE:
+			level = player.weapon_level
+		ShopItem.Type.SHIELD_UPGRADE:
+			level = player.shield_level
+
 	return item.price + item.price_step * level
 func _block_reason(item: ShopItem) -> String:
 	match item.type:
 		ShopItem.Type.HEAL:
 			if player.health >= player.MAX_HEALTH:
 				return "Ya tenés la vida llena."
+
 		ShopItem.Type.WEAPON_UPGRADE:
 			if player.weapon_level >= item.max_level:
 				return "Tu arma ya está al máximo."
-	var missing: int = _price(item) - player.coins
+
+		ShopItem.Type.SHIELD_UPGRADE:
+			if player.shield_level >= item.max_level:
+				return "Tu escudo ya está al máximo."
+
+	var missing : int = _price(item) - player.coins
+
 	if missing > 0:
 		return "Te faltan %d monedas." % missing
-	return ""
 
+	return ""
 func _build_buttons() -> void:
 	for c in items_box.get_children():
 		c.queue_free()
 	buttons.clear()
+	price_labels.clear()
+	status_labels.clear()
 
 	for i in items.size():
+		var item := items[i]
+
 		var b := Button.new()
-		_style_button(b)
-		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		b.icon = items[i].icon
-		b.add_theme_constant_override("h_separation", 14)
+		b.custom_minimum_size = Vector2(150, 160)
+		b.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		_style_card(b)
+
+		var content := VBoxContainer.new()
+		content.set_anchors_preset(Control.PRESET_FULL_RECT)
+		content.offset_left = 6
+		content.offset_right = -6
+		content.offset_top = 8
+		content.offset_bottom = -8
+		content.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		content.alignment = BoxContainer.ALIGNMENT_CENTER
+		content.add_theme_constant_override("separation", 4)
+
+		var sprite := TextureRect.new()
+		sprite.custom_minimum_size = Vector2(55, 55)
+		sprite.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		sprite.texture = item.icon
+
+		var name_label := _card_label(item.item_name, 17, Color("#FFF0D0"))
+		var price_label := _card_label("", 16, Color("#FFD36E"))
+		var status_label := _card_label("", 14, Color("#FF8C73"))
+
+		content.add_child(sprite)
+		content.add_child(name_label)
+		content.add_child(price_label)
+		content.add_child(status_label)
+		b.add_child(content)
+
 		b.pressed.connect(_on_item_pressed.bind(i))
 		b.focus_entered.connect(_on_item_focused.bind(i))
+		b.focus_exited.connect(_shrink.bind(b))
 		b.mouse_entered.connect(b.grab_focus)
+
 		items_box.add_child(b)
 		buttons.append(b)
+		price_labels.append(price_label)
+		status_labels.append(status_label)
 
-	var exit := Button.new()
-	_style_button(exit)
-	exit.text = " Salir"
-	exit.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	exit.pressed.connect(close)
-	exit.focus_entered.connect(_grow.bind(exit))
-	exit.focus_exited.connect(_shrink.bind(exit))
-	items_box.add_child(exit)
-	buttons.append(exit)
-
-	for i in items.size():
-		buttons[i].focus_exited.connect(_shrink.bind(buttons[i]))
-
+func _card_label(text: String, size: int, color: Color) -> Label:
+	var l := Label.new()
+	l.text = text
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	l.add_theme_font_size_override("font_size", size)
+	l.add_theme_color_override("font_color", color)
+	l.add_theme_color_override("font_outline_color", Color("#24170F"))
+	l.add_theme_constant_override("outline_size", 3)
+	return l
 func _play_entrance() -> void:
 	await get_tree().process_frame   # espera a que el contenedor calcule tamaños
 	for i in buttons.size():
@@ -108,44 +167,32 @@ func _play_entrance() -> void:
 
 # Estado de cada producto: texto, color y bloqueo
 
+func _short_reason(item: ShopItem) -> String:
+	match item.type:
+		ShopItem.Type.HEAL:
+			if player.health >= player.MAX_HEALTH:
+				return "Vida llena"
+		ShopItem.Type.WEAPON_UPGRADE:
+			if player.weapon_level >= item.max_level:
+				return "Máximo"
+		ShopItem.Type.SHIELD_UPGRADE:
+			if player.shield_level >= item.max_level:
+				return "Máximo"
+	var missing: int = _price(item) - player.coins
+	if missing > 0:
+		return "Faltan %d" % missing
+	return ""
+
 func _refresh(_total: int = 0) -> void:
-
 	coins_label.text = "Monedas: %d" % player.coins
-
 	for i in items.size():
-
 		var item := items[i]
-		var reason := _block_reason(item)
-		var b := buttons[i]
-
-		var price_text := "%d monedas" % _price(item)
-
-		if reason == "":
-			b.text = "%s     •     %s" % [
-				item.item_name,
-				price_text
-			]
-
-			b.add_theme_color_override(
-				"font_color",
-				Color("#FFF0D0")
-			)
-
-			b.modulate = Color.WHITE
-
-		else:
-			b.text = "%s     •     %s\n%s" % [
-				item.item_name,
-				price_text,
-				reason
-			]
-
-			b.add_theme_color_override(
-				"font_color",
-				Color("#D4BDA0")
-			)
-
-			b.modulate.a = 0.85
+		var blocked := _block_reason(item) != ""
+		price_labels[i].text = "%d monedas" % _price(item)
+		status_labels[i].text = _short_reason(item)
+		price_labels[i].add_theme_color_override(
+			"font_color", Color("#B8A58A") if blocked else Color("#FFD36E"))
+		buttons[i].modulate = Color(1, 1, 1, 0.8) if blocked else Color.WHITE
 func _grow(b: Control) -> void:
 	b.pivot_offset = b.size / 2.0
 	create_tween().tween_property(b, "scale", Vector2(1.03, 1.03), 0.1)
@@ -180,8 +227,12 @@ func _on_item_pressed(i: int) -> void:
 	match item.type:
 		ShopItem.Type.HEAL:
 			player.heal(item.value)
+
 		ShopItem.Type.WEAPON_UPGRADE:
-			player.upgrade_weapon(item.value)
+			player.upgrade_attack(item.value)
+
+		ShopItem.Type.SHIELD_UPGRADE:
+			player.upgrade_shield(item.value)
 
 	_say("¡Buena compra!", GRASS)
 	_refresh()
@@ -194,65 +245,85 @@ const GOLD := Color(0.98, 0.86, 0.5)
 const GRASS := Color(0.65, 0.9, 0.4)
 
 
+var close_button: Button
+
 func _style_ui() -> void:
 	var panel: Control = $Panel
 
-	# Posición y tamaño.
+	# Panel centrado horizontalmente, abajo
 	panel.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	panel.offset_left = -420
-	panel.offset_right = 420
-	panel.offset_top = -300
-	panel.offset_bottom = -20
 
-	# Panel medieval de madera oscura.
+	panel.offset_left = -290
+	panel.offset_right = 290
+	panel.offset_top = -310
+	panel.offset_bottom = -16	
+	# Estilo medieval
 	var panel_style := StyleBoxFlat.new()
-
 	panel_style.bg_color = Color("#49301F")
 	panel_style.border_color = Color("#D9AC58")
 	panel_style.set_border_width_all(4)
+	panel_style.set_corner_radius_all(12)
 
-	panel_style.set_corner_radius_all(8)
+	panel_style.content_margin_left = 12
+	panel_style.content_margin_right = 12
+	panel_style.content_margin_top = 10
+	panel_style.content_margin_bottom = 10
 
-	panel_style.content_margin_left = 18
-	panel_style.content_margin_right = 18
-	panel_style.content_margin_top = 14
-	panel_style.content_margin_bottom = 14
-
-	panel_style.shadow_color = Color(0, 0, 0, 0.45)
-	panel_style.shadow_size = 8
-	panel_style.shadow_offset = Vector2(3, 4)
+	panel_style.shadow_color = Color(0, 0, 0, 0.5)
+	panel_style.shadow_size = 10
+	panel_style.shadow_offset = Vector2(4, 5)
 
 	panel.add_theme_stylebox_override("panel", panel_style)
 
-	# Espacio entre los productos.
-	items_box.add_theme_constant_override("separation", 8)
+	# Tarjetas horizontales
+	items_box.add_theme_constant_override("separation", 10)
+	items_box.alignment = BoxContainer.ALIGNMENT_CENTER
 
-	# Diálogo del mercader.
 	dialogue.add_theme_font_size_override("font_size", 20)
-	dialogue.add_theme_color_override(
-		"font_color", Color("#FFE5AE")
-	)
-	dialogue.add_theme_color_override(
-		"font_outline_color", Color("#24170F")
-	)
-	dialogue.add_theme_constant_override("outline_size", 4)
+	dialogue.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	dialogue.custom_minimum_size.y = 52
+	dialogue.add_theme_color_override("font_color", Color("#FFE5AE"))
 
-	# Monedas.
 	coins_label.add_theme_font_size_override("font_size", 19)
-	coins_label.add_theme_color_override(
-		"font_color", Color("#FFD36E")
-	)
-	coins_label.add_theme_color_override(
-		"font_outline_color", Color("#24170F")
-	)
-	coins_label.add_theme_constant_override("outline_size", 3)
-
+	coins_label.add_theme_color_override("font_color", Color("#FFD36E"))
 	coins_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
+	# Crear una capa independiente para el botón
+	var overlay := Control.new()
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(overlay)
+
+	# Botón circular
+	close_button = Button.new()
+	close_button.text = "×"
+	close_button.custom_minimum_size = Vector2(42, 42)
+	close_button.size = Vector2(42, 42)
+	close_button.add_theme_font_size_override("font_size", 30)
+	close_button.add_theme_color_override("font_color", Color("#FFF0D0"))
+
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = Color("#713D2C")
+	normal.border_color = Color("#D9AC58")
+	normal.set_border_width_all(2)
+	normal.set_corner_radius_all(24)
+
+	var hover := normal.duplicate()
+	hover.bg_color = Color("#A34F37")
+	hover.border_color = Color("#FFE09A")
+
+	close_button.add_theme_stylebox_override("normal", normal)
+	close_button.add_theme_stylebox_override("hover", hover)
+	close_button.add_theme_stylebox_override("pressed", normal)
+
+	close_button.pressed.connect(close)
+
+	overlay.add_child(close_button)
+	
 func _style_button(b: Button) -> void:
 
 	# Tamaño compacto.
-	b.custom_minimum_size = Vector2(0, 48)
+	b.custom_minimum_size = Vector2(115, 125)
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -340,3 +411,26 @@ func _pop(control: Control) -> void:
 	var t := create_tween()
 	t.tween_property(control, "scale", Vector2(1.25, 1.25), 0.07)
 	t.tween_property(control, "scale", Vector2.ONE, 0.1)
+
+func _style_card(b: Button) -> void:
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = Color("#68452C")
+	normal.border_color = Color("#B98A4B")
+	normal.set_border_width_all(2)
+	normal.set_corner_radius_all(10)
+
+	var hover := normal.duplicate()
+	hover.bg_color = Color("#92633B")
+	hover.border_color = Color("#FFE09A")
+
+	var pressed := normal.duplicate()
+	pressed.bg_color = Color("#49301F")
+	pressed.border_color = Color("#E8B95E")
+
+	b.add_theme_stylebox_override("normal", normal)
+	b.add_theme_stylebox_override("hover", hover)
+	b.add_theme_stylebox_override("focus", hover)
+	b.add_theme_stylebox_override("pressed", pressed)
+func _position_close_button() -> void:
+	var rect: Rect2 = $Panel.get_global_rect()
+	close_button.position = rect.position + Vector2(rect.size.x - 21, -21)

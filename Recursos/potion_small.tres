@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="ShopItem" format=3 uid="uid://df35ai4fvr01m"]
 
-[ext_resource type="Texture2D" uid="uid://dh61xr5tt0u3w" path="res://Recursos/items/potion_C_violet_full.png" id="1_cedal"]
+[ext_resource type="Texture2D" uid="uid://dvgq4t8lnxwe4" path="res://Recursos/items/potion_C_red_full.png" id="1_cedal"]
 [ext_resource type="Script" uid="uid://jtlaojyjem8l" path="res://Script/shop_item.gd" id="1_qf5a0"]
 
 [resource]
 script = ExtResource("1_qf5a0")
+item_name = "Salud"
 icon = ExtResource("1_cedal")
 metadata/_custom_type_script = "uid://jtlaojyjem8l"

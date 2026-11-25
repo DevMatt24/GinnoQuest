@@ -22,7 +22,7 @@ const SETTINGS_PATH := "user://settings.cfg"
 @onready var music_slider: HSlider = $UI/Root/OptionsBox/MusicRow/MusicSlider
 @onready var sfx_slider: HSlider = $UI/Root/OptionsBox/SfxRow/SfxSlider
 @onready var fullscreen_check: CheckButton = $UI/Root/OptionsBox/FullscreenCheck
-
+@onready var menu_music: AudioStreamPlayer = $MenuMusic
 var buttons: Array[Button] = []
 var tweens := {}
 var fade: ColorRect
@@ -30,6 +30,13 @@ var busy := false
 
 
 func _ready() -> void:
+	menu_music.volume_db = -45
+	menu_music.play()
+	Input.set_custom_mouse_cursor(
+		load("res://Sprite/UI/Cursor_01.png"),
+		Input.CURSOR_ARROW,
+		Vector2(2, 2)
+	)
 	get_tree().paused = false
 
 	buttons = [play_button, options_button, quit_button, back_button]
@@ -163,7 +170,7 @@ func _style_all() -> void:
 
 	# Título de opciones.
 	$UI/Root/OptionsBox/OptionsTitle.add_theme_font_size_override(
-		"font_size", 38
+		"font_size", 46
 	)
 
 # Botón volver.

@@ -5,5 +5,9 @@
 
 [resource]
 script = ExtResource("1_vva6v")
+item_name = "Escudo"
+type = 1
+value = 3
+price = 10
 icon = ExtResource("1_me4fv")
 metadata/_custom_type_script = "uid://jtlaojyjem8l"

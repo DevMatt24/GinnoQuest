@@ -1,9 +1,12 @@
 [gd_resource type="Resource" script_class="ShopItem" format=3 uid="uid://4o2n3203cnmv"]
 
 [ext_resource type="Script" uid="uid://jtlaojyjem8l" path="res://Script/shop_item.gd" id="1_g728e"]
-[ext_resource type="Texture2D" uid="uid://dvgq4t8lnxwe4" path="res://Recursos/items/potion_C_red_full.png" id="1_vtcjp"]
+[ext_resource type="Texture2D" uid="uid://cs8g61fjr0lv8" path="res://Recursos/items/Arrow.png" id="1_vtcjp"]
 
 [resource]
 script = ExtResource("1_g728e")
+item_name = "Ataque"
+type = 2
+price = 8
 icon = ExtResource("1_vtcjp")
 metadata/_custom_type_script = "uid://jtlaojyjem8l"

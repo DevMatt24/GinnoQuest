@@ -2,9 +2,13 @@
 
 [ext_resource type="PackedScene" uid="uid://dhgssukb1a5yq" path="res://Scene/parallax.tscn" id="1_ftydy"]
 [ext_resource type="Script" uid="uid://dvdt3hyn04gug" path="res://Script/main_menu.gd" id="1_kqsxi"]
-[ext_resource type="Texture2D" uid="uid://ytn00lwqt6wi" path="res://Sprite/mapa/tiletmap/Banner_Slots.png" id="2_pvidh"]
+[ext_resource type="Texture2D" uid="uid://5mjfan2nnr2y" path="res://Sprite/hud/heart/Button_Disable.png" id="2_oqads"]
 [ext_resource type="Texture2D" uid="uid://bcc7lqxf8fhju" path="res://Sprite/mapa/tiletmap/Tilemap_color1.png" id="3_pvidh"]
 [ext_resource type="Texture2D" uid="uid://b8l22dgdavo2m" path="res://Sprite/character/Warrior_Red.png" id="4_hptlk"]
+[ext_resource type="PackedScene" uid="uid://cyiw83ytstoar" path="res://Scene/nubes.tscn" id="6_hptlk"]
+[ext_resource type="FontFile" uid="uid://2c5x7e4dbjdd" path="res://Font/Kingthings_Petrock_light.ttf" id="6_oqads"]
+[ext_resource type="FontFile" uid="uid://b6poxkfbi1ubg" path="res://Font/Kingthings_Petrock.ttf" id="7_s2f1d"]
+[ext_resource type="AudioStream" uid="uid://bx1rymd6l8wxb" path="res://Audio/menu.wav" id="9_ejkra"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oqads"]
 texture = ExtResource("3_pvidh")
@@ -758,7 +762,7 @@ animations = [{
 
 [node name="MainMenu" type="Node2D" unique_id=453655099]
 script = ExtResource("1_kqsxi")
-banner = ExtResource("2_pvidh")
+banner = ExtResource("2_oqads")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1812826366]
 position = Vector2(247, 73)
@@ -794,7 +798,9 @@ offset_bottom = 40.0
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
-text = "GinnoAventuras"
+theme_override_fonts/font = ExtResource("6_oqads")
+theme_override_font_sizes/font_size = 28
+text = "Ginno Quest"
 
 [node name="MenuBox" type="VBoxContainer" parent="UI/Root" unique_id=1419957756]
 layout_mode = 0
@@ -803,14 +809,17 @@ offset_bottom = 40.0
 
 [node name="PlayButton" type="Button" parent="UI/Root/MenuBox" unique_id=1667449078]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("7_s2f1d")
 text = "Jugar"
 
 [node name="OptionsButton" type="Button" parent="UI/Root/MenuBox" unique_id=506964421]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("7_s2f1d")
 text = "Opciones"
 
 [node name="QuitButton" type="Button" parent="UI/Root/MenuBox" unique_id=1415645036]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("7_s2f1d")
 text = "Salir"
 
 [node name="OptionsBox" type="VBoxContainer" parent="UI/Root" unique_id=1415961654]
@@ -821,6 +830,7 @@ offset_bottom = 40.0
 
 [node name="OptionsTitle" type="Label" parent="UI/Root/OptionsBox" unique_id=1585381528]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("7_s2f1d")
 text = "Opciones"
 
 [node name="MusicRow" type="HBoxContainer" parent="UI/Root/OptionsBox" unique_id=1504470726]
@@ -828,6 +838,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="UI/Root/OptionsBox/MusicRow" unique_id=640643441]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("7_s2f1d")
 text = "Musica"
 
 [node name="MusicSlider" type="HSlider" parent="UI/Root/OptionsBox/MusicRow" unique_id=1696457778]
@@ -838,6 +849,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="UI/Root/OptionsBox/SfxRow" unique_id=1270739277]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("7_s2f1d")
 text = "Efectos"
 
 [node name="SfxSlider" type="HSlider" parent="UI/Root/OptionsBox/SfxRow" unique_id=1758016154]
@@ -850,7 +862,14 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 1.0
 offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("7_s2f1d")
 text = "Pantalla Completa"
 
 [node name="BackButton" type="Button" parent="UI/Root/OptionsBox" unique_id=1430894154]
 layout_mode = 2
+
+[node name="Parallax2" parent="." unique_id=102020591 instance=ExtResource("6_hptlk")]
+position = Vector2(13, 119)
+
+[node name="MenuMusic" type="AudioStreamPlayer" parent="." unique_id=972299274]
+stream = ExtResource("9_ejkra")

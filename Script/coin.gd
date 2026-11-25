@@ -15,7 +15,7 @@ func _ready() -> void:
 	sprite.play("spin")
 	# Desfasa la animación para que no giren todas sincronizadas
 	sprite.frame = randi() % sprite.sprite_frames.get_frame_count("spin")
-
+	sound.volume_db = -45
 func _on_body_entered(body: Node2D) -> void:
 	if collected or not body.is_in_group("player"):
 		return
