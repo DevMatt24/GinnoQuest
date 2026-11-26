@@ -12,7 +12,6 @@ const SETTINGS_PATH := "user://settings.cfg"
 
 @onready var hero: AnimatedSprite2D = $Stage/Hero
 @onready var ui: CanvasLayer = $UI
-@onready var title: Label = $UI/Root/Title
 @onready var menu_box: VBoxContainer = $UI/Root/MenuBox
 @onready var options_box: VBoxContainer = $UI/Root/OptionsBox
 @onready var play_button: Button = $UI/Root/MenuBox/PlayButton
@@ -23,6 +22,8 @@ const SETTINGS_PATH := "user://settings.cfg"
 @onready var sfx_slider: HSlider = $UI/Root/OptionsBox/SfxRow/SfxSlider
 @onready var fullscreen_check: CheckButton = $UI/Root/OptionsBox/FullscreenCheck
 @onready var menu_music: AudioStreamPlayer = $MenuMusic
+
+@onready var logo: AnimatedSprite2D = $UI/Root/Logo
 var buttons: Array[Button] = []
 var tweens := {}
 var fade: ColorRect
@@ -30,6 +31,8 @@ var busy := false
 
 
 func _ready() -> void:
+	logo.play("default")
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	menu_music.volume_db = -45
 	menu_music.play()
 	Input.set_custom_mouse_cursor(
@@ -82,24 +85,20 @@ func _layout() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	# Título centrado en la parte superior.
-	title.set_anchors_preset(Control.PRESET_CENTER_TOP)
-	title.offset_left = -420
-	title.offset_right = 420
-	title.offset_top = 35
-	title.offset_bottom = 155
+	# Logo centrado en la parte superior.
+	logo.position = Vector2(576, 180)
+	logo.scale = Vector2(1.8, 1.8)
+	logo.z_index = 10
 
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-
-# Menú principal centrado.
-	menu_box.set_anchors_preset(Control.PRESET_CENTER)
+	# Menú principal: centrado horizontalmente, en la parte baja.
+	menu_box.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
 
 	menu_box.offset_left = -175
 	menu_box.offset_right = 175
-	menu_box.offset_top = -120
-	menu_box.offset_bottom = 120
+	menu_box.offset_top = -250
+	menu_box.offset_bottom = -30
 
-	menu_box.add_theme_constant_override("separation", 18)
+	menu_box.add_theme_constant_override("separation", 10)
 	# PANEL DE OPCIONES.
 	options_box.set_anchors_preset(Control.PRESET_CENTER)
 
@@ -133,7 +132,7 @@ func _banner_style() -> StyleBoxTexture:
 	return s
 
 func _style_button(b: Button) -> void:
-	b.custom_minimum_size = Vector2(300, 68)
+	b.custom_minimum_size = Vector2(300, 56)
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	b.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	b.add_theme_font_size_override("font_size", 24)
@@ -149,7 +148,6 @@ func _style_button(b: Button) -> void:
 			b.add_theme_stylebox_override(state, _banner_style())
 
 func _style_all() -> void:
-	_style_label(title, 84, 14)
 	_style_label($UI/Root/OptionsBox/OptionsTitle, 40, 8)
 	_style_label($UI/Root/OptionsBox/MusicRow/Label, 22, 5)
 	_style_label($UI/Root/OptionsBox/SfxRow/Label, 22, 5)
@@ -242,41 +240,37 @@ func _play_intro() -> void:
 		b.modulate.a = 0.0
 		create_tween().tween_property(b, "modulate:a", 1.0, 0.3).set_delay(0.5 + i * 0.12)
 		i += 1
+		
+		# Entrada del logo desde arriba.
+	var base := logo.position
+	logo.position.y -= 180
+	logo.modulate.a = 0.0
 
+	var intro := create_tween().set_parallel(true)
+
+	intro.tween_property(logo, "position:y", base.y, 0.9) \
+		.set_trans(Tween.TRANS_BACK) \
+		.set_ease(Tween.EASE_OUT)
+
+	intro.tween_property(logo, "modulate:a", 1.0, 0.5)
+
+	await intro.finished
+
+	_logo_loop(base)
 	# Título: cae con rebote
-	var base := title.position
-	title.pivot_offset = title.size / 2.0
-	title.position = base + Vector2(0, -300)
-	title.modulate.a = 0.0
-	var drop := create_tween().set_parallel(true)
-	drop.tween_property(title, "position:y", base.y, 0.9) \
-		.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
-	drop.tween_property(title, "modulate:a", 1.0, 0.4)
-	await drop.finished
-
-	_title_loop(base)
+	
 	play_button.grab_focus()
 
-func _title_loop(base: Vector2) -> void:
-	# Flotación
+func _logo_loop(base: Vector2) -> void:
 	var float_t := create_tween().set_loops()
-	float_t.tween_property(title, "position:y", base.y - 8.0, 1.6) \
-		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	float_t.tween_property(title, "position:y", base.y, 1.6) \
-		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	# Latido de tamaño
-	var pulse := create_tween().set_loops()
-	pulse.tween_property(title, "scale", Vector2(1.04, 1.04), 1.2) \
-		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	pulse.tween_property(title, "scale", Vector2.ONE, 1.2) \
-		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	# Brillo dorado
-	var shine := create_tween().set_loops()
-	shine.tween_property(title, "self_modulate", Color(1.0, 0.93, 0.65), 1.5)
-	shine.tween_property(title, "self_modulate", Color.WHITE, 1.5)
 
-# ---------- Héroe ----------
+	float_t.tween_property(logo, "position:y", base.y - 8.0, 1.6) \
+		.set_trans(Tween.TRANS_SINE) \
+		.set_ease(Tween.EASE_IN_OUT)
 
+	float_t.tween_property(logo, "position:y", base.y, 1.6) \
+		.set_trans(Tween.TRANS_SINE) \
+		.set_ease(Tween.EASE_IN_OUT)
 func _hero_loop() -> void:
 	# De vez en cuando hace su ataque y vuelve a idle
 	while true:

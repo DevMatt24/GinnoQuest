@@ -24,6 +24,9 @@
 [ext_resource type="Texture2D" uid="uid://cjih3u1i3jkem" path="res://Sprite/mapa/deco/rocas/06.png" id="17_12tpx"]
 [ext_resource type="PackedScene" uid="uid://df87gwdypnrci" path="res://Scene/hud.tscn" id="20_rbhmp"]
 [ext_resource type="PackedScene" uid="uid://ymg2vwfsc0jb" path="res://Scene/coin.tscn" id="21_0s263"]
+[ext_resource type="Texture2D" uid="uid://ustaaumlkdwq" path="res://Sprite/mapa/deco/demas/Estandarte.png" id="22_rwl1g"]
+[ext_resource type="Texture2D" uid="uid://dysnbgg8h178g" path="res://Sprite/mapa/deco/demas/Linterna.png" id="23_7ujf4"]
+[ext_resource type="PackedScene" uid="uid://twhyyihv2iru" path="res://Scene/checkpoint.tscn" id="24_7ujf4"]
 [ext_resource type="PackedScene" uid="uid://h2knwu3uavgg" path="res://Scene/shopkeeper.tscn" id="24_vdjmp"]
 [ext_resource type="Script" uid="uid://jtlaojyjem8l" path="res://Script/shop_item.gd" id="25_i066b"]
 [ext_resource type="PackedScene" uid="uid://db41rxdk4wb4b" path="res://Scene/enemy2.tscn" id="25_xupp5"]
@@ -34,6 +37,8 @@
 [ext_resource type="Resource" uid="uid://bxmr4xs564oyo" path="res://Recursos/elixir.tres" id="28_co1dn"]
 [ext_resource type="Texture2D" uid="uid://cijq43p0ja1up" path="res://Sprite/mapa/deco/arboles/1.png" id="30_i0828"]
 [ext_resource type="PackedScene" uid="uid://cyiw83ytstoar" path="res://Scene/nubes.tscn" id="32_co1dn"]
+[ext_resource type="PackedScene" uid="uid://bxqdfwgoni21v" path="res://Scene/boss.tscn" id="38_gx8px"]
+[ext_resource type="PackedScene" uid="uid://dlvejxxvnn1oi" path="res://Scene/portal.tscn" id="39_42i3c"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eh52p"]
 texture = ExtResource("1_stdmf")
@@ -1042,17 +1047,130 @@ animations = [{
 "speed": 6.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_sarn8"]
+atlas = ExtResource("22_rwl1g")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gx8px"]
+atlas = ExtResource("22_rwl1g")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_42i3c"]
+atlas = ExtResource("22_rwl1g")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ixius"]
+atlas = ExtResource("22_rwl1g")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sm5a3"]
+atlas = ExtResource("22_rwl1g")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5e3v2"]
+atlas = ExtResource("22_rwl1g")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_se0ii"]
+atlas = ExtResource("22_rwl1g")
+region = Rect2(1152, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_quswc"]
+atlas = ExtResource("22_rwl1g")
+region = Rect2(1344, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cjqpa"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sarn8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gx8px")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_42i3c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ixius")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sm5a3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5e3v2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_se0ii")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_quswc")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4bar2"]
+atlas = ExtResource("23_7ujf4")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u2hnx"]
+atlas = ExtResource("23_7ujf4")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4omxh"]
+atlas = ExtResource("23_7ujf4")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ked4"]
+atlas = ExtResource("23_7ujf4")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e2t4h"]
+atlas = ExtResource("23_7ujf4")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dx34o"]
+atlas = ExtResource("23_7ujf4")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hqox4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4bar2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u2hnx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4omxh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ked4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e2t4h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dx34o")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 8.0
+}]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xl3cd"]
 size = Vector2(3968.5, 50.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cjqpa"]
+size = Vector2(35, 477)
 
 [node name="Nivel1" type="Node2D" unique_id=1780937828]
 script = ExtResource("1_0fn0l")
 
 [node name="Parallax" parent="." unique_id=1065202218 instance=ExtResource("5_eh52p")]
-position = Vector2(-543, -189)
-scale = Vector2(4, 4)
-
-[node name="Parallax3" parent="." unique_id=1440465724 instance=ExtResource("5_eh52p")]
 position = Vector2(-543, -189)
 scale = Vector2(4, 4)
 
@@ -2601,6 +2719,62 @@ texture = ExtResource("17_12tpx")
 position = Vector2(4088, 575)
 texture = ExtResource("17_12tpx")
 
+[node name="estandarte" type="Node2D" parent="tiletset/Decoracion" unique_id=478739079]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="tiletset/Decoracion/estandarte" unique_id=1357536760]
+position = Vector2(-87, 597)
+scale = Vector2(0.7916667, 0.8802083)
+sprite_frames = SubResource("SpriteFrames_cjqpa")
+autoplay = "default"
+frame_progress = 0.512285
+
+[node name="linterna" type="Node2D" parent="tiletset/Decoracion" unique_id=2141409836]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="tiletset/Decoracion/linterna" unique_id=544292202]
+position = Vector2(323, 529)
+scale = Vector2(0.59375, 0.7239583)
+sprite_frames = SubResource("SpriteFrames_hqox4")
+autoplay = "default"
+frame_progress = 0.45597342
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="tiletset/Decoracion/linterna" unique_id=1146574620]
+position = Vector2(206, 746.99994)
+scale = Vector2(0.59375, 0.7239583)
+sprite_frames = SubResource("SpriteFrames_hqox4")
+autoplay = "default"
+frame_progress = 0.29779088
+
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="tiletset/Decoracion/linterna" unique_id=514956201]
+position = Vector2(917.99994, 643)
+scale = Vector2(0.59375, 0.7239583)
+sprite_frames = SubResource("SpriteFrames_hqox4")
+autoplay = "default"
+frame_progress = 0.29779088
+
+[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="tiletset/Decoracion/linterna" unique_id=1820026991]
+position = Vector2(1085, 355)
+scale = Vector2(0.59375, 0.7239583)
+sprite_frames = SubResource("SpriteFrames_hqox4")
+autoplay = "default"
+frame_progress = 0.29779088
+
+[node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="tiletset/Decoracion/linterna" unique_id=1624422619]
+position = Vector2(1576, 208.99998)
+scale = Vector2(0.59375, 0.7239583)
+sprite_frames = SubResource("SpriteFrames_hqox4")
+autoplay = "default"
+frame_progress = 0.29779088
+
+[node name="AnimatedSprite2D6" type="AnimatedSprite2D" parent="tiletset/Decoracion/linterna" unique_id=2129196732]
+position = Vector2(1702, 521)
+scale = Vector2(0.59375, 0.7239583)
+sprite_frames = SubResource("SpriteFrames_hqox4")
+autoplay = "default"
+frame_progress = 0.29779088
+
+[node name="Checkpoint" parent="tiletset/Decoracion" unique_id=1045494023 instance=ExtResource("24_7ujf4")]
+position = Vector2(1353, 416)
+
 [node name="Player" parent="." unique_id=514193922 instance=ExtResource("3_3q6er")]
 z_index = 2
 position = Vector2(-190, 623)
@@ -2700,7 +2874,7 @@ position = Vector2(1621, 534)
 position = Vector2(-326, 635)
 
 [node name="LimitBottomRight" type="Marker2D" parent="." unique_id=520223032]
-position = Vector2(4445, 555)
+position = Vector2(4471, 600)
 
 [node name="HUD" parent="." unique_id=664200372 instance=ExtResource("20_rbhmp")]
 
@@ -2724,7 +2898,31 @@ debug_color = Color(0.814052, 0.26552027, 0.7763908, 0.41960785)
 
 [node name="Parallax2" parent="." unique_id=14745563 instance=ExtResource("32_co1dn")]
 z_index = 3
-position = Vector2(880, 773)
+position = Vector2(1483, 733)
 scale = Vector2(2, 2)
+
+[node name="BossTrigger" type="Area2D" parent="." unique_id=516695377]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BossTrigger" unique_id=79997957]
+position = Vector2(3111.5, 332.5)
+shape = SubResource("RectangleShape2D_cjqpa")
+
+[node name="ArenaTopLeft" type="Marker2D" parent="." unique_id=53305802]
+position = Vector2(3091, 0)
+
+[node name="ArenaBottomRight" type="Marker2D" parent="." unique_id=1690890791]
+position = Vector2(4459, 739)
+
+[node name="Boss" parent="." unique_id=1179035842 instance=ExtResource("38_gx8px")]
+z_index = 3
+position = Vector2(4041.0002, 492.00003)
+scale = Vector2(1.5, 1.5)
+
+[node name="Portal" parent="." unique_id=636633082 instance=ExtResource("39_42i3c")]
+z_index = 1
+position = Vector2(4397, 528.00006)
+scale = Vector2(5, 5)
 
 [connection signal="died" from="Player" to="." method="_on_player_died"]

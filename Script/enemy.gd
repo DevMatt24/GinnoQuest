@@ -2,7 +2,7 @@ class_name Enemy
 extends CharacterBody2D
 
 const SPEED := 60.0
-
+signal died
 @export var frames: SpriteFrames
 @export var faces_right := true
 @export var max_health := 3
@@ -27,6 +27,7 @@ var player: Node2D
 @onready var damage_area: Area2D = $DamageArea
 
 func _ready() -> void:
+	add_to_group("enemy")
 	if frames:
 		sprite.sprite_frames = frames
 	health = max_health
@@ -120,6 +121,7 @@ func take_damage(amount: int, source_x: float) -> void:
 
 func _die() -> void:
 	is_dead = true
+	died.emit()
 	damage_area.set_deferred("monitoring", false)
 	_drop_coin()
 	sprite.play("dead")

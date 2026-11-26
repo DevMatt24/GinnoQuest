@@ -208,10 +208,12 @@ func _on_attack_area_body_entered(body: Node2D) -> void:
 func _on_health_changed(current: int, maximum: int) -> void:
 	pass # Replace with function body.
 
+var coins_collected := 0
+
 func add_coins(amount: int) -> void:
 	coins += amount
+	coins_collected += amount
 	coins_changed.emit(coins)
-
 func _update_camera_look(delta: float) -> void:
 	var cam := get_viewport().get_camera_2d()
 	if cam == null:
@@ -370,3 +372,22 @@ func _break_shield() -> void:
 	var t := create_tween()
 	animated_sprite.modulate = Color(1.6, 0.4, 0.4)
 	t.tween_property(animated_sprite, "modulate", Color.WHITE, 0.4)
+
+func respawn() -> void:
+	is_dead = false
+	is_hurt = false
+	is_attacking = false
+	is_respawning = false
+	invulnerable = true
+
+	health = MAX_HEALTH
+	health_changed.emit(health, MAX_HEALTH)
+
+	global_position = respawn_position
+	velocity = Vector2.ZERO
+	was_on_floor = true
+	animated_sprite.modulate.a = 1.0
+	animated_sprite.play("idle")
+
+	await get_tree().create_timer(1.5).timeout
+	invulnerable = false

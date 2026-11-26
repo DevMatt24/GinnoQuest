@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bb621gp67owgp"]
+
+[ext_resource type="Script" uid="uid://b0g6gtok8t30i" path="res://Script/level_complete.gd" id="1_xhg3f"]
+
+[node name="level_complete" type="CanvasLayer" unique_id=1306947635]
+script = ExtResource("1_xhg3f")

@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://twhyyihv2iru"]
+
+[ext_resource type="Script" uid="uid://ddmrvqjsi8fah" path="res://Script/checkpoint.gd" id="1_vukaf"]
+[ext_resource type="Texture2D" uid="uid://ustaaumlkdwq" path="res://Sprite/mapa/deco/demas/Estandarte.png" id="2_kqt28"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2iojn"]
+atlas = ExtResource("2_kqt28")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aij1q"]
+atlas = ExtResource("2_kqt28")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dplsf"]
+atlas = ExtResource("2_kqt28")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_krrq0"]
+atlas = ExtResource("2_kqt28")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_elph2"]
+atlas = ExtResource("2_kqt28")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rt2xd"]
+atlas = ExtResource("2_kqt28")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kriyd"]
+atlas = ExtResource("2_kqt28")
+region = Rect2(1152, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hqcji"]
+atlas = ExtResource("2_kqt28")
+region = Rect2(1344, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jdu18"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2iojn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aij1q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dplsf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_krrq0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_elph2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rt2xd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kriyd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hqcji")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 9.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7ujf4"]
+size = Vector2(15, 120)
+
+[node name="Checkpoint" type="Area2D" unique_id=1045494023]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_vukaf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2145503431]
+position = Vector2(3.999999, -1)
+scale = Vector2(0.7916667, 0.7994792)
+sprite_frames = SubResource("SpriteFrames_jdu18")
+frame_progress = 0.34581912
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2141558549]
+position = Vector2(2.5, 11)
+shape = SubResource("RectangleShape2D_7ujf4")
+
+[node name="ActivateSound" type="AudioStreamPlayer" parent="." unique_id=272974044]

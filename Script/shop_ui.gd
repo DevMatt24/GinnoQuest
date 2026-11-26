@@ -12,11 +12,13 @@ var buttons: Array[Button] = []
 var price_labels: Array[Label] = []
 var status_labels: Array[Label] = []
 func _ready() -> void:
+	
 	process_mode = Node.PROCESS_MODE_ALWAYS   # funciona con el juego pausado
 	_style_ui()
 	hide()
 
 func open(p: Node, shop_items: Array[ShopItem], greeting: String) -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	player = p
 	items = shop_items
 	# Congelar solamente al jugador
@@ -41,6 +43,7 @@ func open(p: Node, shop_items: Array[ShopItem], greeting: String) -> void:
 	await get_tree().process_frame
 	_position_close_button()
 func close() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	if player and player.coins_changed.is_connected(_refresh):
 		player.coins_changed.disconnect(_refresh)
 
