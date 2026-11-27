@@ -45,7 +45,7 @@ Plataformero 2D en pixel art hecho con **Godot 4.7**. Controlás a un caballero 
 1. Instalá **Godot 4.7** (versión estándar, no .NET).
 2. Cloná el repositorio:
    ```bash
-   git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git
+   git clone https://github.com/DevMatt24/GinnoQuest.git
    ```
 3. Abrí Godot, elegí **Importar** y seleccioná el archivo `project.godot`.
 4. Presioná **F5** para ejecutar. La escena principal es `main_menu.tscn`.
