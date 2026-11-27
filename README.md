@@ -2,9 +2,6 @@
 
 Plataformero 2D en pixel art hecho con **Godot 4.7**. Controlás a un caballero que recorre islas flotantes, derrota enemigos, junta monedas, compra mejoras a un vendedor, activa checkpoints y se enfrenta a un dragón final para abrir el portal de fin de nivel.
 
-> Completá con tus datos: autor, enlace a capturas o GIFs, y licencia (ver el final del documento).
-
----
 
 ## Índice
 
@@ -45,7 +42,7 @@ Plataformero 2D en pixel art hecho con **Godot 4.7**. Controlás a un caballero 
 1. Instalá **Godot 4.7** (versión estándar, no .NET).
 2. Cloná el repositorio:
    ```bash
-   git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git
+   git clone https://github.com/DevMatt24/GinnoQuest.git
    ```
 3. Abrí Godot, elegí **Importar** y seleccioná el archivo `project.godot`.
 4. Presioná **F5** para ejecutar. La escena principal es `main_menu.tscn`.
@@ -329,7 +326,6 @@ Usa un `Tween` en modo física, así el jugador viaja sobre ella sin código ext
 
 ## Créditos y licencia
 
-- **Autor:** _tu nombre_
+- **Autor:** Matias Muñoz, Lara Camacho, Marina Barranco, Angeles Tramaleo
 - **Motor:** [Godot Engine](https://godotengine.org/) (licencia MIT)
-- **Arte y audio:** _indicá la fuente y la licencia de tus spritesheets, tiles, fuentes y sonidos_
-- **Licencia del código:** _por ejemplo MIT; agregá un archivo `LICENSE` al repositorio_
+
